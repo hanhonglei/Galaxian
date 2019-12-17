@@ -32,7 +32,7 @@ typedef struct				// 结构体类型，游戏中的坦克结构体
 	COLORREF c;				// 颜色
 }Entity;
 
-#define MAX_ENEMY 16		// 最大敌人数目
+#define MAX_ENEMY 18		// 最大敌人数目
 #define MAX_BULLETS 32		// 最大子弹数目
 int nLife = 3;				// 玩家生命
 int nScore = 0;				// 玩家得分
@@ -77,18 +77,23 @@ void ResetPlayer()
 // 游戏初始化
 void Init()
 {
-	for(nEnemy = 0; nEnemy < MAX_ENEMY; nEnemy++)
-	{
-		enemys[nEnemy].s = sz;
-		enemys[nEnemy].b = 0;
-		enemys[nEnemy].e = 1;
-		enemys[nEnemy].dir = Dir(UP+rand()%4);		// 随机选择一个前进方向
-		enemys[nEnemy].v = rand()%2==0?velf:vels;	// 在两种速度之间以50%的几率随机选择一种
-		enemys[nEnemy].c = enemys[nEnemy].v == velf?RGB(0,122,122):RGB(0,60,30);	// 两种速度坦克的颜色不一样
-		enemys[nEnemy].x = (rand()%3)*(wndWidth-sz)/2 + sz/2;	// 随机出生点
-		enemys[nEnemy].y = sz;
-		enemys[nEnemy].p = 0;
+	int line = 3;
+	nEnemy = 0;
+	for (int i = 0; i < line; i++) {
+		int count = 0;
+		for (; count < MAX_ENEMY / line; nEnemy++, count++) {
+			enemys[nEnemy].s = sz;
+			enemys[nEnemy].b = 0;
+			enemys[nEnemy].e = 1;
+			enemys[nEnemy].dir = RIGHT;//Dir(UP+rand()%4);		// 随机选择一个前进方向
+			enemys[nEnemy].v = vels;//rand()%2==0?velf:vels;	// 在两种速度之间以50%的几率随机选择一种
+			enemys[nEnemy].c = i % 2 == 0 ? RGB(0, 122, 122) : RGB(0, 60, 30);//enemys[nEnemy].v == velf?RGB(0,122,122):RGB(0,60,30);	// 两种速度坦克的颜色不一样
+			enemys[nEnemy].x = (wndWidth - sz) / 2 - sz * MAX_ENEMY / line + 2 * count * sz;//(rand()%3)*(wndWidth-sz)/2 + sz/2;	// 随机出生点
+			enemys[nEnemy].y = sz / 2 + 2 * i * sz;//sz;
+			enemys[nEnemy].p = 0;
+		}
 	}
+
 	ResetPlayer();
 }
 
