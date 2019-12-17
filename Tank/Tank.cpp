@@ -567,14 +567,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_CREATE:			// 程序启动后,开始设置一个定时器
 		SetTimer(hWnd,1,timeStep,NULL);
+		SetTimer(hWnd, 2, 1000, NULL);	// 用于改变敌人运动方向的定时器
 		break;
 	case WM_TIMER:			// 定时器响应
+		InvalidateRect(hWnd, NULL, TRUE);	// 让窗口变为无效,从而触发重绘消息
 		if (wParam == 1)	// 对游戏进行更新
 		{
 			if (nLife > 0)
-				Update(timeStep/10);
-			InvalidateRect(hWnd, NULL, TRUE);	// 让窗口变为无效,从而触发重绘消息
+				Update(timeStep / 10);
 		}
+		else if (wParam == 2)
+			ChangeEnemyDir(enemys);
 		break;
 	case WM_SIZE:			// 获取窗口的尺寸
 		wndWidth = LOWORD(lParam);
@@ -593,20 +596,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				player.dir = RIGHT;
 				player.p = 0;
 				break;
-			case VK_UP:
-				player.dir = UP;
-				player.p = 0;
-				break;
-			case VK_DOWN:
-				player.dir = DOWN;
-				player.p = 0;
-				break;
+			//case VK_UP:
+			//	player.dir = UP;
+			//	player.p = 0;
+			//	break;
+			//case VK_DOWN:
+			//	player.dir = DOWN;
+			//	player.p = 0;
+			//	break;
 			case VK_SPACE:	// 射击
 				bFire = 1;;
 				break;
 			}
 			break;
 		}
+	case WM_KEYUP:
+		InvalidateRect(hWnd, NULL, TRUE);
+		switch (wParam) {
+		case VK_LEFT:
+		case VK_RIGHT:
+			player.p = 1;
+			break;
+		}
+		break;
 	case WM_ERASEBKGND:		// 不擦除背景,避免闪烁
 		break;
 	case WM_PAINT:
@@ -643,6 +655,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	case WM_DESTROY:
 		KillTimer(hWnd,1);		// 程序退出时，将定时器删除
+		KillTimer(hWnd, 2);
 		PostQuitMessage(0);
 		break;
 	default:
