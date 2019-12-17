@@ -135,12 +135,12 @@ void Fire(const Entity* ent)
 	(pBulletes+nB)->b = 1;
 	(pBulletes+nB)->e = 0;
 	(pBulletes+nB)->c = (ent->e)?RGB(0,0,255):RGB(255,0,0);	// 敌人发出炮弹和玩家发出的不一样
-	(pBulletes+nB)->dir = ent->dir;
+	(pBulletes + nB)->dir = (ent->e) ? DOWN : UP;//ent->dir;
 	(pBulletes+nB)->v = velb;
 	(pBulletes+nB)->x = ent->x;
 	(pBulletes+nB)->p = 0;
 	(pBulletes+nB)->y = ent->y;
-	switch(ent->dir)	// 炮弹方向就是此时射击物体的朝向
+	switch(/*ent->dir*/ (pBulletes+nB)->dir)	// 按照炮弹的方向来调整位置
 	{
 	case UP:
 		(pBulletes+nB)->y -= ent->s;
