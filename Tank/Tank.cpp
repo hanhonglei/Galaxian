@@ -118,6 +118,11 @@ void Move(Entity *ent, int ts)
 		break;
 	}
 }
+void ChangeEnemyDir(Entity* ents)
+{
+	for (int i = 0; i < nEnemy; i++)
+		ents[i].dir = ents[i].dir == LEFT ? RIGHT : LEFT;
+}
 
 // 特定实体进行射击
 void Fire(const Entity* ent)
