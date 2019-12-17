@@ -336,35 +336,43 @@ void DrawEntity(HDC hdc, const Entity *ent)
 	rc.bottom = ent->y+ent->s/2;
 	rc.right = ent->x+ent->s/2;
 	FillRect(hdc, &rc, brush);				// 绘制实体主体
-	if (!ent->b)							// 如果这个实体不是子弹,则依据朝向绘制炮筒
+	if (!ent->b)							// 如果这个实体不是子弹,则依据角色类型绘制炮筒
 	{
-		switch(ent->dir)
+		//switch(ent->dir)
+		if (ent->e)
 		{
-		case UP:
-			rc.bottom = rc.top;
-			rc.top = rc.bottom - ent->s/2;
-			rc.left = rc.left + ent->s/4;
-			rc.right = rc.right - ent->s/4;
-			break;
-		case DOWN:
+			//		case UP:
+						//rc.bottom = rc.top;
 			rc.top = rc.bottom;
-			rc.bottom = rc.bottom + ent->s/2;
-			rc.left = rc.left + ent->s/4;
-			rc.right = rc.right - ent->s/4;
-			break;
-		case LEFT:
-			rc.right = rc.left;
-			rc.left = rc.left - ent->s/2;
-			rc.bottom = rc.bottom - ent->s/4;
-			rc.top = rc.top + ent->s/4;
-			break;
-		case RIGHT:
-			rc.left = rc.right;
-			rc.right = rc.right + ent->s/2;
-			rc.bottom = rc.bottom - ent->s/4;
-			rc.top = rc.top + ent->s/4;
-			break;
+			//rc.top = rc.bottom - ent->s/2;
+			rc.bottom = rc.bottom + ent->s / 2;
+			rc.left = rc.left + ent->s / 4;
+			rc.right = rc.right - ent->s / 4;
+			//break;
 		}
+		else
+		{
+			//		case DOWN:
+						//rc.top = rc.bottom;
+			rc.bottom = rc.top;
+			//rc.bottom = rc.bottom + ent->s/2;
+			rc.top = rc.bottom - ent->s / 2;
+			rc.left = rc.left + ent->s / 4;
+			rc.right = rc.right - ent->s / 4;
+			//break;
+		}
+		//case LEFT:
+		//	rc.right = rc.left;
+		//	rc.left = rc.left - ent->s/2;
+		//	rc.bottom = rc.bottom - ent->s/4;
+		//	rc.top = rc.top + ent->s/4;
+		//	break;
+		//case RIGHT:
+		//	rc.left = rc.right;
+		//	rc.right = rc.right + ent->s/2;
+		//	rc.bottom = rc.bottom - ent->s/4;
+		//	rc.top = rc.top + ent->s/4;
+		//	break;
 		FillRect(hdc, &rc, brush);
 	}
 	DeleteObject(brush);			// 将使用完的笔刷删除
