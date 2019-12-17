@@ -216,9 +216,12 @@ int WallCollide(Entity *ent)
 	}
 	if (bC)
 	{
+		/*
 		if (ent->e)				// 如果敌人和边界发生碰撞,则随机生成新的运动方向
 			ent->dir = Dir((ent->dir+1+rand()%3)%4);
 		else					// 如果是玩家和边界发生碰撞,则玩家停止
+			ent->p = 1;*/
+		if (!ent->e)
 			ent->p = 1;
 	}
 	return bC;
@@ -284,24 +287,24 @@ void Update(int ts)
 		}
 	}
 	// 判断敌人是否和玩家碰撞
-	for (int i = 0; i < nEnemy; i++)
-	{
-		if (IsCollide(&player, &enemys[i]))
-		{
-			ResetPlayer();
-			nLife--;
-		}
-	}
+	//for (int i = 0; i < nEnemy; i++)
+	//{
+	//	if (IsCollide(&player, &enemys[i]))
+	//	{
+	//		ResetPlayer();
+	//		nLife--;
+	//	}
+	//}
 	// 判断各种实体是否和游戏边界发生碰撞
-	for (int i = 0; i < nEnemy; i++)	// 敌人
-	{
-		ent = enemys+i;
-		if (!WallCollide(ent))		// 有一定几率改变方向
-		{
-			if (rand()%enemyDir == 0)
-				ent->dir = Dir((ent->dir+1+rand()%3)%4);
-		}
-	}
+	//for (int i = 0; i < nEnemy; i++)	// 敌人
+	//{
+	//	ent = enemys+i;
+	//	if (!WallCollide(ent))		// 有一定几率改变方向
+	//	{
+	//		if (rand()%enemyDir == 0)
+	//			ent->dir = Dir((ent->dir+1+rand()%3)%4);
+	//	}
+	//}
 	for (int i = 0; i < nBullet; i++)	// 玩家炮弹
 	{
 		ent = bullets+i;
